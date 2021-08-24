@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["@cloudflare/workers-types", "node"],
+    "lib": ["esnext", "webworker"]
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["src", "node_modules/@cloudflare/workers-types/index.d.ts"]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "tiktok-embeds",
+  "version": "1.0.0",
+  "main": "worker/script.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "wrangler build",
+    "deploy": "wrangler publish; rm -rf worker",
+    "test": "ts-node test/handler.ts"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^2.0.0",
+    "@types/node": "^14.11.1",
+    "@types/node-fetch": "^2.5.7",
+    "@types/route-parser": "^0.1.3",
+    "ts-loader": "^8.0.3",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "route-parser": "^0.0.5"
+  }
+}
