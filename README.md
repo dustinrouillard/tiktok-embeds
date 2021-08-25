@@ -17,7 +17,7 @@ Going to the direct link will return the video
 
 This link will return the metatags for the discord embed if the useragent contains Discord, then within the meta tags the url for the video is the following (which is required to have .mp4 at the end and used to return the video even if discord's user agent)
 
-<https://vm.dstn.to/raw/ZMRjsP94a.mp4>
+<https://vm.dstn.to/ZMRjsP94a/video.mp4>
 
 ## Demo
 

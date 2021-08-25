@@ -23,10 +23,10 @@ export async function videoFromIdOrWeb(id: string) {
 
   const data: TikTokData = JSON.parse(matched[1]).props.pageProps.itemInfo.itemStruct;
 
-  return { address: data.video.playAddr, cookie: WebCookie, data };
+  return { address: data.video.playAddr, thumbnail: data.video.reflowCover, cookie: WebCookie, data };
 }
 
-export async function proxyVideo(url: string, cookie: string) {
+export async function proxyAsset(url: string, cookie: string) {
   const video = await fetch(url, {
     method: 'GET',
     headers: { 'Cookie': `${cookie}`, ...TikTokHeaders },

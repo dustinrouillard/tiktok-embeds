@@ -6,6 +6,7 @@
   "scripts": {
     "build": "wrangler build",
     "deploy": "wrangler publish; rm -rf worker",
+    "devploy": "wrangler publish --env dev; rm -rf worker",
     "test": "ts-node test/handler.ts"
   },
   "devDependencies": {

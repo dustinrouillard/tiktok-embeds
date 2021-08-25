@@ -1,14 +1,19 @@
 import Route from 'route-parser';
 
 import { NotFound } from './methods/notfound';
-import { VideoFromShare, VideoFromUser, OEmbedCustom } from './methods/video';
+import { VideoFromShare, VideoFromUser, ThumbnailFromShare, ThumbnailFromUser, OEmbedCustom } from './methods/video';
 
 const routes = [
   { route: new Route('/oembed.json'), method: 'GET', handler: OEmbedCustom },
+
+  { route: new Route('/:id/video.mp4'), method: 'GET', handler: VideoFromShare, args: [true] },
+  { route: new Route('/:id/thumb.jpeg'), method: 'GET', handler: ThumbnailFromShare },
+
+  { route: new Route('/:user/video/:id.mp4'), method: 'GET', handler: VideoFromUser, args: [true] },
+  { route: new Route('/:user/video/:id.jpeg'), method: 'GET', handler: ThumbnailFromUser },
+
   { route: new Route('/:id'), method: 'GET', handler: VideoFromShare },
   { route: new Route('/:user/video/:id'), method: 'GET', handler: VideoFromUser },
-  { route: new Route('/raw/:id.mp4'), method: 'GET', handler: VideoFromShare, args: [true] },
-  { route: new Route('/raw/:user/video/:id.mp4'), method: 'GET', handler: VideoFromUser, args: [true] },
 ];
 
 export async function handleRequest(request: Request): Promise<Response> {
@@ -19,5 +24,9 @@ export async function handleRequest(request: Request): Promise<Response> {
 
   const params = route.route.match(url.pathname.endsWith('/') ? url.pathname.slice(0, -1) : url.pathname);
 
-  return route.handler(request, params as any, route.args);
+  try {
+    return route.handler(request, params as any, route.args);
+  } catch (error) {
+    return new Response(error.toString(), { headers: { 'content-type': 'text/plain' } });
+  }
 }
