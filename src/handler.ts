@@ -24,9 +24,5 @@ export async function handleRequest(request: Request): Promise<Response> {
 
   const params = route.route.match(url.pathname.endsWith('/') ? url.pathname.slice(0, -1) : url.pathname);
 
-  try {
-    return route.handler(request, params as any, route.args);
-  } catch (error) {
-    return new Response(error.toString(), { headers: { 'content-type': 'text/plain' } });
-  }
+  return route.handler(request, params as any, route.args);
 }
