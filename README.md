@@ -5,7 +5,7 @@ This generates an OpenGraph embed for a tiktok from the following url formats
 - `https://vm.tiktok.com/ZMRjsP94a`
 - `https://tiktok.com/@momma_mandy_plus7/video/6992363023767850246`
 
-Right now this only seems to work in Discord, but that's where it's used most so I'll work on getting other apps working later on.
+Right now the embeds are confirmed working in Discord, and Telegram.
 
 Runs in Cloudflare Workers, deployed with Wrangler, makes it snappy.
 
