@@ -1,6 +1,8 @@
 import { TikTokData } from "../types/Tiktok";
 
 export function generateMeta(type: 'discord' | 'telegram' | 'other', base: string, path: string, data: TikTokData) {
+  if (!data.desc) data.desc = `@${data.author.uniqueId}`;
+
   const metas = [
     '<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />',
     '<meta content="#1d1d1d" data-react-helmet="true" name="theme-color" />',

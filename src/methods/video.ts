@@ -54,7 +54,7 @@ export async function OEmbedCustom(request: Request, params: RequestParams, args
     author_name: description,
     author_url: url,
     provider_name: "dstn.to - TikTok",
-    provider_url: "https://github.com/dustinrouillard",
+    provider_url: "https://dstn.to/tt-embeds",
     title,
     type: "video",
     version: "1.0",
