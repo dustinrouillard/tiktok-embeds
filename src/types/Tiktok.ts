@@ -4,7 +4,8 @@ export interface TikTokData {
   createTime: number;
   scheduleTime: number;
   video: Video;
-  author: Author;
+  author: string;
+  authorId: string;
   music: Music;
   challenges: Challenge[];
   stats: Stats;

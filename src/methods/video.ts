@@ -1,33 +1,37 @@
-import { proxyAsset, videoFromIdOrWeb } from "../helpers/video";
-import { RequestParams } from "../types/Request";
-import { TikTokData } from "../types/Tiktok";
-import { generateMeta } from "../utils/meta";
-import { parseUserAgent } from "../utils/useragent";
+import { proxyAsset, videoFromIdOrWeb } from '../helpers/video';
+import { RequestParams } from '../types/Request';
+import { TikTokData } from '../types/Tiktok';
+import { generateMeta } from '../utils/meta';
+import { parseUserAgent } from '../utils/useragent';
 
 export async function VideoFromShare(request: Request, params: RequestParams<{ id: string }>, args?: any[]): Promise<Response> {
-  const Link = new URL(request.url);
-  const path = Link.pathname.endsWith('/') ? Link.pathname.slice(0, -1) : Link.pathname;
+  try {
+    const Link = new URL(request.url);
+    const path = Link.pathname.endsWith('/') ? Link.pathname.slice(0, -1) : Link.pathname;
 
-  let url: { address: string; cookie: string; data: TikTokData } | undefined;
-  if (path.endsWith('.mp4')) url = await videoFromIdOrWeb(params.id);
+    let url: { address: string; data: TikTokData } | undefined;
+    if (path.endsWith('.mp4')) url = await videoFromIdOrWeb(params.id);
 
-  if (!path.endsWith('.mp4')) {
-    const type = parseUserAgent(request.headers.get('user-agent') as string);
-    if (['discord', 'telegram'].includes(type)) {
-      url = await videoFromIdOrWeb(params.id);
-      return generateMeta(type, Link.origin, path, url.data);
+    if (!path.endsWith('.mp4')) {
+      const type = parseUserAgent(request.headers.get('user-agent') as string);
+      if (['discord', 'telegram'].includes(type)) {
+        url = await videoFromIdOrWeb(params.id);
+        return generateMeta(type, Link.origin, path, url.data);
+      }
     }
-  }
 
-  if (url) return await proxyAsset(url.address, url.cookie);
-  return Response.redirect(`${Link.origin}${path}/video.mp4`, 302);
+    if (url) return await proxyAsset(url.address);
+    return Response.redirect(`${Link.origin}${path}/video.mp4`, 302);
+  } catch (error: any) {
+    return new Response(JSON.stringify(error));
+  }
 }
 
 export async function VideoFromUser(request: Request, params: RequestParams<{ user: string; id: string }>, args?: any[]): Promise<Response> {
   const Link = new URL(request.url);
   const path = Link.pathname.endsWith('/') ? Link.pathname.slice(0, -1) : Link.pathname;
 
-  let url: { address: string; cookie: string; data: TikTokData } | undefined;
+  let url: { address: string; data: TikTokData } | undefined;
   if (path.endsWith('.mp4')) url = await videoFromIdOrWeb(`${params.user}/video/${params.id}`);
 
   if (!path.endsWith('.mp4')) {
@@ -38,19 +42,19 @@ export async function VideoFromUser(request: Request, params: RequestParams<{ us
     }
   }
 
-  if (url) return await proxyAsset(url.address, url.cookie);
+  if (url) return await proxyAsset(url.address);
   return Response.redirect(`${Link.origin}${path}/video.mp4`, 302);
 }
 
 export async function ThumbnailFromShare(request: Request, params: RequestParams<{ id: string }>, args?: any[]): Promise<Response> {
   const url = await videoFromIdOrWeb(params.id);
-  const proxied = await proxyAsset(url.thumbnail, url.cookie);
+  const proxied = await proxyAsset(url.thumbnail);
   return proxied;
 }
 
 export async function ThumbnailFromUser(request: Request, params: RequestParams<{ user: string; id: string }>, args?: any[]): Promise<Response> {
   const url = await videoFromIdOrWeb(`${params.user}/video/${params.id}`);
-  const proxied = await proxyAsset(url.thumbnail, url.cookie);
+  const proxied = await proxyAsset(url.thumbnail);
   return proxied;
 }
 
@@ -64,11 +68,11 @@ export async function OEmbedCustom(request: Request, params: RequestParams, args
   const json = {
     author_name: description,
     author_url: url,
-    provider_name: "dstn.to - TikTok",
-    provider_url: "https://dstn.to/tt-embeds",
+    provider_name: 'dstn.to - TikTok',
+    provider_url: 'https://dstn.to/tt-embeds',
     title,
-    type: "video",
-    version: "1.0",
+    type: 'video',
+    version: '1.0',
   };
 
   return new Response(JSON.stringify(json), { headers: { 'content-type': 'application/json' } });
