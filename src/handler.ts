@@ -8,11 +8,14 @@ const routes = [
 
   { route: new Route('/:id/video.mp4'), method: 'GET', handler: VideoFromShare, args: [true] },
   { route: new Route('/:id/thumb.jpeg'), method: 'GET', handler: ThumbnailFromShare },
+  { route: new Route('/t/:id/video.mp4'), method: 'GET', handler: VideoFromShare, args: [true] },
+  { route: new Route('/t/:id/thumb.jpeg'), method: 'GET', handler: ThumbnailFromShare },
 
   { route: new Route('/:user/video/:id/video.mp4'), method: 'GET', handler: VideoFromUser, args: [true] },
   { route: new Route('/:user/video/:id/thumb.jpeg'), method: 'GET', handler: ThumbnailFromUser },
 
   { route: new Route('/:id'), method: 'GET', handler: VideoFromShare },
+  { route: new Route('/t/:id'), method: 'GET', handler: VideoFromShare },
   { route: new Route('/:user/video/:id'), method: 'GET', handler: VideoFromUser },
 ];
 

@@ -11,12 +11,12 @@ export async function videoFromIdOrWeb(id: string) {
   if (req.status != 200) throw 'vm_request_failed';
 
   const con = await req.text();
-  const matched = con.match(/<script id="sigi-persisted-data">(.*?)<\/script>/);
+  const matched = con.match(/<script id="SIGI_STATE" type="application\/json">(.*?)<\/script>/);
   if (!matched) throw 'invalid_match_for_video';
 
   const object = `${matched[1].slice(21).split('window[')[0].split('};')[0]}`;
   const itemMatch = object.match(/"ItemModule":({.*?}),"UserModule"/);
-  if (!itemMatch) throw 'invalid_match_for_video';
+  if (!itemMatch) throw 'invalid_item_match_for_video';
 
   const data = Object.values(JSON.parse(itemMatch[1]))[0] as TikTokData;
 
