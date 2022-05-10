@@ -16,7 +16,7 @@ export async function VideoFromShare(request: Request, params: RequestParams<{ i
       const type = parseUserAgent(request.headers.get('user-agent') as string);
       if (['discord', 'telegram'].includes(type)) {
         url = await videoFromIdOrWeb(params.id);
-        return generateMeta(type, Link.origin, path, url.data);
+        return generateMeta(type, Link.origin, path, url.data, url.address);
       }
     }
 
@@ -38,7 +38,7 @@ export async function VideoFromUser(request: Request, params: RequestParams<{ us
     const type = parseUserAgent(request.headers.get('user-agent') as string);
     if (['discord', 'telegram'].includes(type)) {
       url = await videoFromIdOrWeb(`${params.user}/video/${params.id}`);
-      return generateMeta(type, Link.origin, path, url.data);
+      return generateMeta(type, Link.origin, path, url.data, url.address);
     }
   }
 
