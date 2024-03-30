@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "wrangler build",
-    "deploy": "wrangler publish; rm -rf worker",
-    "devploy": "wrangler publish --env dev; rm -rf worker",
-    "test": "ts-node test/handler.ts"
+    "pub": "wrangler deploy; rm -rf worker",
+    "devploy": "wrangler deploy --env dev; rm -rf worker",
+    "test": "ts-node src/test.ts"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^2.0.0",

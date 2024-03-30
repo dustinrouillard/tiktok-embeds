@@ -142,3 +142,158 @@ export interface Video {
   codecType: string;
   definition: string;
 }
+
+export interface TiktokAPI {
+  extra: Extra;
+  itemInfo: ItemInfo;
+  log_pb: LogPb;
+  statusCode: number;
+  status_code: number;
+}
+
+export interface Extra {
+  fatal_item_ids: any[];
+  logid: string;
+  now: number;
+}
+
+export interface ItemInfo {
+  itemStruct: ItemStruct;
+}
+
+export interface ItemStruct {
+  author: Author;
+  challenges: Challenge[];
+  createTime: number;
+  desc: string;
+  digged: boolean;
+  duetDisplay: number;
+  duetEnabled: boolean;
+  forFriend: boolean;
+  id: string;
+  itemCommentStatus: number;
+  music: Music;
+  officalItem: boolean;
+  originalItem: boolean;
+  privateItem: boolean;
+  secret: boolean;
+  shareEnabled: boolean;
+  stats: Stats;
+  stitchDisplay: number;
+  stitchEnabled: boolean;
+  textExtra: TextExtra[];
+  video: Video;
+}
+
+export interface Author {
+  avatarLarger: string;
+  avatarMedium: string;
+  avatarThumb: string;
+  commentSetting: number;
+  duetSetting: number;
+  ftc: boolean;
+  id: string;
+  isADVirtual: boolean;
+  nickname: string;
+  openFavorite: boolean;
+  privateAccount: boolean;
+  relation: number;
+  secUid: string;
+  secret: boolean;
+  signature: string;
+  stitchSetting: number;
+  uniqueId: string;
+  verified: boolean;
+}
+
+export interface Challenge {
+  coverLarger: string;
+  coverMedium: string;
+  coverThumb: string;
+  desc: string;
+  id: string;
+  profileLarger: string;
+  profileMedium: string;
+  profileThumb: string;
+  title: string;
+}
+
+export interface Music {
+  album: string;
+  authorName: string;
+  coverLarge: string;
+  coverMedium: string;
+  coverThumb: string;
+  duration: number;
+  id: string;
+  original: boolean;
+  playUrl: string;
+  title: string;
+}
+
+export interface Stats {
+  commentCount: number;
+  diggCount: number;
+  playCount: number;
+  shareCount: number;
+}
+
+export interface TextExtra {
+  awemeId: string;
+  end: number;
+  hashtagId: string;
+  hashtagName: string;
+  isCommerce: boolean;
+  start: number;
+  subType: number;
+  type: number;
+}
+
+export interface Video {
+  bitrate: number;
+  bitrateInfo: BitrateInfo[];
+  codecType: string;
+  cover: string;
+  definition: string;
+  downloadAddr: string;
+  duration: number;
+  dynamicCover: string;
+  encodeUserTag: string;
+  encodedType: string;
+  format: string;
+  height: number;
+  id: string;
+  originCover: string;
+  playAddr: string;
+  ratio: string;
+  videoQuality: string;
+  volumeInfo: VolumeInfo;
+  width: number;
+  zoomCover: { [key: string]: string };
+}
+
+export interface BitrateInfo {
+  Bitrate: number;
+  CodecType: string;
+  GearName: string;
+  PlayAddr: PlayAddr;
+  QualityType: number;
+}
+
+export interface PlayAddr {
+  DataSize: number;
+  FileCs: string;
+  FileHash: string;
+  Uri: string;
+  UrlKey: string;
+  UrlList: string[];
+}
+
+export interface VolumeInfo {
+  Loudness: number;
+  Peak: number;
+}
+
+export interface LogPb {
+  impr_id: string;
+}

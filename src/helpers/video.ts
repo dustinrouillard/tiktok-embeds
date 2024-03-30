@@ -1,32 +1,43 @@
 import { TikTokHeaders } from '../config';
-import { TikTokData } from '../types/Tiktok';
+import { FrontityState, VideoData } from '../types/Frontity';
 
-export async function videoFromIdOrWeb(id: string) {
-  const initial = await fetch('https://www.tiktok.com', { headers: TikTokHeaders });
-  if (initial.status != 200) throw 'initial_request_failed';
+export async function videoFromIdOrWeb(id: string): Promise<{ address: string; thumbnail: string; data: VideoData }> {
+  if (id.includes('/video/')) {
+    let [user, _, postId] = id.split('/');
+    if (!postId && user) postId = user;
+    const apiData = await fetch(`https://www.tiktok.com/embed/v2/${postId}`, { headers: TikTokHeaders });
 
-  const url = id.includes('/') ? `https://www.tiktok.com/${id}` : `https://vm.tiktok.com/${id}`;
+    const con = await apiData.text();
+    const matched = con.match(/<script id="__FRONTITY_CONNECT_STATE__" type="application\/json">(.*?)<\/script>/);
 
-  const req = await fetch(url, { headers: { ...TikTokHeaders } });
-  if (req.status != 200) throw 'vm_request_failed';
+    if (!matched) {
+      throw 'api_request_failed';
+    }
 
-  const con = await req.text();
-  const matched = con.match(/<script id="SIGI_STATE" type="application\/json">(.*?)<\/script>/);
-  if (!matched) throw 'invalid_match_for_video';
+    const json: FrontityState = JSON.parse(`${matched[0].slice(21).split('">')[1].slice(0, -9)}`);
 
-  const object = `${matched[1].slice(21).split('window[')[0].split('};')[0]}`;
-  const itemMatch = object.match(/"ItemModule":({.*?}),"UserModule"/);
-  if (!itemMatch) throw 'invalid_item_match_for_video';
+    const source = json.source.data[`/embed/v2/${postId}`];
 
-  const data = Object.values(JSON.parse(itemMatch[1]))[0] as TikTokData;
+    return {
+      address: source.videoData.itemInfos.video.urls[0],
+      thumbnail: source.videoData.itemInfos.covers[0],
+      data: source.videoData,
+    };
+  }
 
-  return { address: data.video.playAddr, thumbnail: data.video.reflowCover, data };
+  const url = `https://vm.tiktok.com/${id}`;
+
+  const req = await fetch(url, { headers: TikTokHeaders, redirect: 'manual' });
+  if (req.status != 301) throw 'vm_request_failed';
+
+  const newUrl = new URL(req.headers.get('location') as string);
+  return videoFromIdOrWeb(newUrl.pathname.slice(1));
 }
 
 export async function proxyAsset(url: string) {
   const video = await fetch(url, {
     method: 'GET',
-    headers: { ...TikTokHeaders },
+    headers: { ...TikTokHeaders, referer: 'https://www.tiktok.com/' },
   });
 
   return video;

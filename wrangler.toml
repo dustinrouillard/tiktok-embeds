@@ -1,8 +1,5 @@
-type = "webpack"
-webpack_config = "webpack.config.js"
-
-zone_id = "348792876bb474a7cadf69be26c00b5c"
-account_id = "3e4e267fb0f575f02c3d6ecd0c65f3cd"
+main = "src/index.ts"
+compatibility_date = "2023-07-17"
 
 name = "tiktok-embeds"
 routes = ["vm.dstn.to/*"]
